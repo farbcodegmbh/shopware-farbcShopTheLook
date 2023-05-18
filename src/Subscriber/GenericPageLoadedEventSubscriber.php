@@ -3,7 +3,7 @@
 namespace SasImageHotspot\Subscriber;
 
 use SasImageHotspot\Content\ImageHotspotMap\ImageHotspotMapEntity;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\NotFilter;
@@ -17,7 +17,7 @@ class GenericPageLoadedEventSubscriber implements EventSubscriberInterface
      */
     private $mapRepository;
 
-    public function __construct(EntityRepositoryInterface $mapRepository)
+    public function __construct(EntityRepository $mapRepository)
     {
         $this->mapRepository = $mapRepository;
     }

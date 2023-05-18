@@ -1,18 +1,19 @@
 {
     "sas-image-hotspot-map": {
         "general": {
-            "title": "Bild-Hotspot-Karte",
+            "title": "Shop the Look",
             "description": "Beschreibung",
-            "setHotspot": "Stellen Sie den Image-Hotspot ein"
+            "setHotspot": "Shop the Look"
         },
         "fields": {
             "title": "Titel",
             "image": "Bild",
             "link": "Verknüpfung",
             "openNewTab": "Link in neuem Tab öffnen",
-            "modalTitle": "Hotspot-Detail",
+            "modalTitle": "Shop the Look",
             "description": "Beschreibung",
-            "product": "Kartiertes Produkt"
+            "product": "Produkt",
+            "productPlaceholder": "Produkt auswählen"
         }
     }
 }

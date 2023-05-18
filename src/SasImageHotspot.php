@@ -64,22 +64,21 @@ class SasImageHotspot extends Plugin
             ],
         ], $context);
 
+        /** @var Connection $connection */
         $connection = $this->container->get(Connection::class);
 
         $thumbnailSizes = $this->upsertThumbnailSizes($connection);
 
-        $stmt = $connection->prepare('SELECT media_folder_configuration_id FROM media_folder WHERE name = :name');
-
-        $stmt->execute(['name' => 'Hotspot Images']);
-        $configurationId = $stmt->fetchColumn();
+        $resultSet       = $connection->executeQuery('SELECT media_folder_configuration_id FROM media_folder WHERE name = :name', ['name' => 'Hotspot Images']);
+        $configurationId = $resultSet->fetchOne();
 
         foreach ($thumbnailSizes as $thumbnailSize) {
-            $connection->executeUpdate('
+            $connection->executeStatement('
                     REPLACE INTO `media_folder_configuration_media_thumbnail_size` (`media_folder_configuration_id`, `media_thumbnail_size_id`)
                     VALUES (:folderConfigurationId, :thumbnailSizeId)
                 ', [
                 'folderConfigurationId' => $configurationId,
-                'thumbnailSizeId' => $thumbnailSize['id'],
+                'thumbnailSizeId'       => $thumbnailSize['id'],
             ]);
         }
     }
@@ -136,21 +135,21 @@ class SasImageHotspot extends Plugin
             ['width' => 1920, 'height' => 1920],
         ];
 
-        $stmt = $connection->prepare('SELECT id FROM media_thumbnail_size WHERE width = :width AND height = :height');
         foreach ($thumbnailSizes as $i => $thumbnailSize) {
-            $stmt->execute(['width' => $thumbnailSize['width'], 'height' => $thumbnailSize['height']]);
-            $id = $stmt->fetchColumn();
+
+            $resultSet = $connection->executeQuery('SELECT id FROM media_thumbnail_size WHERE width = :width AND height = :height', ['width' => $thumbnailSize['width'], 'height' => $thumbnailSize['height']]);
+            $id        = $resultSet->fetchOne();
             if ($id) {
                 $thumbnailSizes[$i]['id'] = $id;
 
                 continue;
             }
             $id = Uuid::randomBytes();
-            $connection->executeUpdate('
+            $connection->executeStatement('
                 INSERT INTO `media_thumbnail_size` (`id`, `width`, `height`, created_at)
                 VALUES (:id, :width, :height, :createdAt)
             ', [
-                'id' => $id,
+                'id'        => $id,
                 'width' => $thumbnailSize['width'],
                 'height' => $thumbnailSize['height'],
                 'createdAt' => (new \DateTime())->format(Defaults::STORAGE_DATE_TIME_FORMAT),

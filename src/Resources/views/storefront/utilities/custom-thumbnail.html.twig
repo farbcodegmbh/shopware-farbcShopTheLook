@@ -47,7 +47,7 @@
     {% endapply %}{% endset %}
 {% endif %}
 {% set map = null %}
-{% if page is defined and page.extensions.maps is defined %}
+{% if page is defined and page.extensions.maps is defined and media.createdAt is not null %}
     {% set map = page.extensions.maps[media.id] %}
 {% endif %}
 

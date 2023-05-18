@@ -1,9 +1,7 @@
 import './sas-image-hotspot.scss';
 import template from './sas-image-hotspot.html.twig';
 
-const { Component } = Shopware;
-import $ from 'jquery';
-import 'jquery-ui/ui/widgets/draggable';
+const {Component} = Shopware;
 
 Component.register('sas-image-hotspot', {
     template,
@@ -16,22 +14,20 @@ Component.register('sas-image-hotspot', {
         isActive: {
             type: Boolean,
             default: false
-        }
+        },
+        wrapper: {}
     },
 
     inject: ['repositoryFactory'],
 
     data() {
         return {
-            styleObject:  {top: this.hotspot.top + '%', left: this.hotspot.left + '%', position: 'absolute'}
+            styleObject: {top: this.hotspot.top + '%', left: this.hotspot.left + '%', position: 'absolute'}
         }
     },
 
     mounted() {
-        $(this.$refs['pin_' + this.hotspot.id]).draggable({
-            containment: ".sas-image-hotspot-map-wrapper",
-            stop: (e) => this.onDraggingEnd(e)
-        });
+        console.log("pin.mounted", this.hotspot);
     },
 
     methods: {
@@ -39,14 +35,26 @@ Component.register('sas-image-hotspot', {
             this.$emit('on-dot-click', this.hotspot);
         },
 
-        onDraggingEnd(e) {
-            const targetStyle = e.target.style;
+        onDragStart(event) {
+            event.dataTransfer.setDragImage(event.target, window.outerWidth, window.outerHeight);
+        },
+
+        onDrag(event) {
+            event.dataTransfer.setDragImage(event.target, window.outerWidth, window.outerHeight);
+            this.$refs['pin_' + this.hotspot.id].style.left = ((event.clientX-this.wrapper.getBoundingClientRect().x)/this.wrapper.clientWidth * 100) +"%";
+            this.$refs['pin_' + this.hotspot.id].style.top = ((event.clientY-this.wrapper.getBoundingClientRect().y)/this.wrapper.clientHeight * 100) +"%";
+        },
+
+        onDragEnd(event) {
+
+            this.$refs['pin_' + this.hotspot.id].style.left = ((event.clientX-this.wrapper.getBoundingClientRect().x)/this.wrapper.clientWidth * 100) +"%";
+            this.$refs['pin_' + this.hotspot.id].style.top = ((event.clientY-this.wrapper.getBoundingClientRect().y)/this.wrapper.clientHeight * 100) +"%";
 
             this.$emit('on-dragging-end', {
-                top: targetStyle.top,
-                left: targetStyle.left,
+                left: (event.clientX-this.wrapper.getBoundingClientRect().x)/this.wrapper.clientWidth * 100,
+                top: (event.clientY-this.wrapper.getBoundingClientRect().y)/this.wrapper.clientHeight * 100,
                 id: this.hotspot.id
             });
-        }
+        },
     }
 });

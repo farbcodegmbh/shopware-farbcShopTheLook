@@ -1,9 +1,9 @@
 import './sas-image-hotspot-map.scss';
 import template from './sas-image-hotspot-map.html.twig';
-import $ from 'jquery';
 const utils = Shopware.Utils;
 
 const { Component } = Shopware;
+const { Criteria } = Shopware.Data;
 
 Component.register('sas-image-hotspot-map', {
     template,
@@ -33,6 +33,33 @@ Component.register('sas-image-hotspot-map', {
         uploadTag() {
             return `sas-image-hotspot-media`;
         },
+
+        productRepository() {
+            return this.repositoryFactory.create('product');
+        },
+
+        productSelectContext() {
+            return {
+                ...Shopware.Context.api,
+                inheritance: true,
+            };
+        },
+
+        productCriteria() {
+            const criteria = new Criteria(1, 25);
+            criteria.addAssociation('options.group');
+
+            return criteria;
+        },
+
+        selectedProductCriteria() {
+            const criteria = new Criteria(1, 25);
+            criteria.addAssociation('deliveryTime');
+
+            return criteria;
+        },
+
+
     },
 
     data() {
@@ -72,8 +99,8 @@ Component.register('sas-image-hotspot-map', {
         },
 
         onImageClick(e) {
-            const topOffset = this.el.getBoundingClientRect().top - $(window).scrollTop();
-            const leftOffset = this.el.getBoundingClientRect().left - $(window).scrollLeft();
+            const topOffset = this.el.getBoundingClientRect().top - document.querySelector("html").scrollTop;
+            const leftOffset = this.el.getBoundingClientRect().left - document.querySelector("html").scrollLeft;
 
             const topPx = Math.round( (e.clientY - topOffset - 6) );
             const leftPx = Math.round( (e.clientX - leftOffset - 6) );
@@ -89,6 +116,7 @@ Component.register('sas-image-hotspot-map', {
             pin.id = dotId;
             pin.mapId = this.map.id;
             pin.mediaId = null;
+            pin.product = null;
             pin.productId = null;
 
             this.map.hotspots.add(pin);
@@ -100,8 +128,8 @@ Component.register('sas-image-hotspot-map', {
         onDraggingEnd(e) {
             let pin = this.map.hotspots.get(e.id);
 
-            pin.left = parseInt(e.left) / this.wrapper.clientWidth * 100;
-            pin.top = parseInt(e.top) / this.wrapper.clientHeight * 100;
+            pin.left = parseInt(e.left);
+            pin.top = parseInt(e.top);
         },
 
         onPinModalClosed() {
@@ -123,6 +151,19 @@ Component.register('sas-image-hotspot-map', {
         removeMedia() {
             this.selectedPin.mediaId = null;
             this.selectedPin.media = null;
-        }
+        },
+
+        onProductChange(productId) {
+            if (!productId) {
+                this.selectedPin.productId = null;
+                this.selectedPin.product = null;
+            } else {
+                this.productRepository.get(productId, this.productSelectContext, this.selectedProductCriteria)
+                    .then((product) => {
+                        this.selectedPin.productId = productId;
+                        this.selectedPin.product = product;
+                    });
+            }
+        },
     }
 });

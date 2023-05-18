@@ -14,7 +14,7 @@ class Migration1606761373CreateSasImageHotspot extends MigrationStep
 
     public function update(Connection $connection): void
     {
-        $connection->executeUpdate('
+        $connection->executeStatement('
             CREATE TABLE IF NOT EXISTS `sas_image_hotspot_map` (
                 `id` BINARY(16) NOT NULL,
                 `media_id` BINARY(16) NOT NULL,
@@ -25,7 +25,7 @@ class Migration1606761373CreateSasImageHotspot extends MigrationStep
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
         ');
 
-        $connection->executeUpdate('
+        $connection->executeStatement('
             CREATE TABLE IF NOT EXISTS `sas_image_hotspot_map_translation` (
               `sas_image_hotspot_map_id`    BINARY(16)                         NOT NULL,
               `language_id`         BINARY(16)                              NOT NULL,
@@ -42,7 +42,7 @@ class Migration1606761373CreateSasImageHotspot extends MigrationStep
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
         ');
 
-        $connection->executeUpdate('
+        $connection->executeStatement('
             CREATE TABLE IF NOT EXISTS `sas_image_hotspot` (
                 `id` BINARY(16) NOT NULL,
                 `map_id` BINARY(16) NOT NULL,
@@ -61,7 +61,7 @@ class Migration1606761373CreateSasImageHotspot extends MigrationStep
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
         ');
 
-        $connection->executeUpdate('
+        $connection->executeStatement('
             CREATE TABLE IF NOT EXISTS `sas_image_hotspot_translation` (
               `sas_image_hotspot_id`    BINARY(16)                         NOT NULL,
               `language_id`         BINARY(16)                              NOT NULL,

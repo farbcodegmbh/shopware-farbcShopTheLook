@@ -1,9 +1,17 @@
 {
     "name": "sas/image-hotspot",
-    "description": "Image Hotspot Plugin for Shopware 6",
+    "description": "Image Hotspot Plugin for Shopware 6 - farbverliebt Edition",
     "type": "shopware-platform-plugin",
     "version":"1.0.0",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Shape & Shift"
+        },
+        {
+            "name": "farbcode GmbH"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "SasImageHotspot\\": "src/"

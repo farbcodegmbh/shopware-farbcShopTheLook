@@ -6,6 +6,59 @@
                   @modal-close="onPinModalClosed"
                   :title="$tc('sas-image-hotspot-map.fields.modalTitle')">
 
+            <sw-container gap="20px" columns="1fr" class="sas-image-hotspot-map-fields" v-if="selectedPin">
+                <slot name="productId-field">
+                    {% block sas_image_hotspot_map_productId_field %}
+                        <sw-entity-single-select
+                                v-model="selectedPin.productId"
+                                entity="product"
+                                :label="$tc('sas-image-hotspot-map.fields.product')"
+                                :placeholder="$tc('sas-image-hotspot-map.fields.productPlaceholder')"
+                                :criteria="productCriteria"
+                                :context="productSelectContext"
+                                show-clearable-button
+                                @change="onProductChange"
+                        >
+
+                            <!-- eslint-disable-next-line sw-deprecation-rules/no-twigjs-blocks -->
+                            {% block sw_cms_element_buy_box_config_product_variant_label %}
+                                <template #selection-label-property="{ item }">
+                                    <sw-product-variant-info :variations="item.variation">
+                                        {{ item.translated.name || item.name }}
+                                    </sw-product-variant-info>
+                                </template>
+                            {% endblock %}
+
+                            <!-- eslint-disable-next-line sw-deprecation-rules/no-twigjs-blocks -->
+                            {% block sw_cms_element_buy_box_config_product_select_result_item %}
+                                <template #result-item="{ item, index }">
+                                    <li
+                                            is="sw-select-result"
+                                            v-bind="{ item, index }"
+                                    >
+
+                                        <!-- eslint-disable-next-line sw-deprecation-rules/no-twigjs-blocks -->
+                                        {% block sw_entity_single_select_base_results_list_result_label %}
+                                            <span class="sw-select-result__result-item-text">
+                                <sw-product-variant-info :variations="item.variation">
+                                    {{ item.translated.name || item.name }}
+                                </sw-product-variant-info>
+                            </span>
+                                        {% endblock %}
+
+                                    </li>
+                                </template>
+                            {% endblock %}
+
+                        </sw-entity-single-select>
+
+
+
+                    {% endblock %}
+                </slot>
+            </sw-container>
+
+            <!--
             <sw-container gap="20px" columns="1fr 1fr" class="sas-image-hotspot-map-fields" v-if="selectedPin">
                 <slot name="title-field">
                     {% block sas_image_hotspot_map_title_field %}
@@ -54,11 +107,12 @@
                     <sw-text-editor size="medium" required :label="$tc('sas-image-hotspot-map.fields.description')" v-model="selectedPin.description" />
                 {% endblock %}
             </slot>
+            -->
 
             <template #modal-footer>
                 <slot name="delete-modal-footer">
                     <slot name="delete-modal-cancel">
-                        <sw-button @click="onSaveDot" size="small">
+                        <sw-button @click="onSaveDot" variant="primary" size="small">
                             {{ $tc('global.default.apply') }}
                         </sw-button>
                     </slot>
@@ -78,7 +132,7 @@
                 <div class="sas-image-hotspot-map-wrapper" ref="pinMapImageWrapper">
                     <img class="sas-image-hotspot-map" @click="onImageClick" :src="map.media.url" ref="pinMapImage"/>
                     <sas-image-hotspot v-for="(hotspot, index) in map.hotspots"
-                                 :key="hotspot.id" :hotspot="hotspot"
+                                 :key="hotspot.id" :hotspot="hotspot" :wrapper="wrapper"
                                  :isActive="selectedPin && hotspot.id === selectedPin.id"
                                  @on-dragging-end="onDraggingEnd"
                                  @on-dot-click="onDotClick"/>
