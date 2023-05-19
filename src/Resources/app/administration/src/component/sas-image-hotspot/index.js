@@ -25,11 +25,7 @@ Component.register('sas-image-hotspot', {
             styleObject: {top: this.hotspot.top + '%', left: this.hotspot.left + '%', position: 'absolute'}
         }
     },
-
-    mounted() {
-        console.log("pin.mounted", this.hotspot);
-    },
-
+    
     methods: {
         onDotClick() {
             this.$emit('on-dot-click', this.hotspot);

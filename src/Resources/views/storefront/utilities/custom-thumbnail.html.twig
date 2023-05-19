@@ -74,17 +74,19 @@
         {% if (hotspotEnabled and map is not null) or showPreviewHotspot %}
             {% if showPreviewHotspot != true %}
                 {% for hotspot in map %}
-                    {% set showDesc = hotspot.translated.title or hotspot.translated.description or hotspot.media.url %}
-                    <div style="top: {{ hotspot.top }}%; left: {{ hotspot.left }}%" class="sas-image-hotspot" {% if showDesc %}
-                        data-sas-image-hotspot="true"
-                        data-html="true"
-                        data-trigger="hover focus"
-                        data-template='<div class="tooltip sas-image-hotspot-tooltip" role="tooltip"><div class="tooltip-inner"></div></div>'
-                        data-toggle="tooltip"
-                        {% if hotspot.top > 60 %}data-placement="top"{% else %}data-placement="bottom"{% endif %}
-                        title='{% sw_include '@Storefront/storefront/component/sas-image-hotspot-desc.html.twig' with {
+                    {% set showDesc = hotspot.product.translated.name %}
+                    <div style="top: {{ hotspot.top }}%; left: {{ hotspot.left }}%" class="sas-image-hotspot stl-{{ media.id }}" {% if showDesc %}
+                        data-bs-toggle="stl-tooltip"
+                        data-bs-trigger="manual focus"
+                        data-bs-template='<div class="tooltip sas-image-hotspot-tooltip" role="tooltip"><div class="tooltip-inner"></div></div>'
+                        data-bs-title='{% sw_include '@Storefront/storefront/component/sas-image-hotspot-desc.html.twig' with {
                             hotspot: hotspot
-                        } %}'{% endif %}>
+                        } %}'
+                        data-sas-image-hotspot="true"
+                        data-media-id="{{ media.id }}"
+                        data-bs-html="true"
+                        {% if hotspot.top > 60 %}data-bs-placement="top"{% else %}data-bs-placement="bottom"{% endif %}
+                    {% endif %}>
                     </div>
                 {% endfor %}
             {% else %}

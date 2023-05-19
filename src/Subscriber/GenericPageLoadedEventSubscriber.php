@@ -13,9 +13,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class GenericPageLoadedEventSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var EntityRepositoryInterface
+     * @var EntityRepository
      */
-    private $mapRepository;
+    private EntityRepository $mapRepository;
 
     public function __construct(EntityRepository $mapRepository)
     {
@@ -36,6 +36,9 @@ class GenericPageLoadedEventSubscriber implements EventSubscriberInterface
         $criteria = new Criteria();
         $criteria->addAssociations([
             'hotspots.media',
+            'hotspots.product',
+            'hotspots.product.manufacturer',
+            'hotspots.product.unit',
         ]);
 
         $criteria->getAssociation('hotspots')->addFilter(new NotFilter(NotFilter::CONNECTION_AND, [

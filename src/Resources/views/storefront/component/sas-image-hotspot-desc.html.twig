@@ -1,31 +1,20 @@
-<div class="sas-image-hotspot__desc">
-    {% if hotspot.media.url %}
-        {% set attributes = {
-            'class': 'sas-image-hotspot__desc-image',
-            'alt': (hotspot.media.translated.alt ?: ''),
-            'title': (hotspot.media.translated.title ?: ''),
-            'data-object-fit': 'contain'
-        } %}
+{% set product = hotspot.product %}
+<div class="sas-image-hotspot-wrapper">
+    <div class="sas-image-hotspot-inner shadow-lg">
+        <a class="d-flex text-start stretched-link" href="{{ seoUrl('frontend.detail.page', { 'productId': product.id }) }}" title="{{ product.translated.name }}">
+            <div class="sas-image-hotspot-content pe-4">
+                <div>{{ product.manufacturer.translated.name }}</div>
+                <div class="py-1"><strong>{{ product.translated.name }}</strong></div>
+                <div>{{ product.price.elements|first.gross|currency }}</div>
 
-        {% sw_thumbnails 'sas-image-hotspot__desc-image' with {
-            media: hotspot.media
-        }%}
-    {% endif %}
-
-    <div class="sas-image-hotspot__desc-text">
-        {% if hotspot.translated.title %}
-            <h4>
-                {% if hotspot.translated.link %}
-                    <a {% if hotspot.translated.openNewTab %}target="_blank"{% endif %} href="{{ hotspot.translated.link }}">
+                {% if product.purchaseUnit is not null and product.referenceUnit > 0 %}
+                    {% set basePrice =  product.price.elements|first.gross *  product.referenceUnit / product.purchaseUnit %}
+                    <small>
+                        Inhalt: {{ product.purchaseUnit }} {{ product.unit.translated.name }} ({{ basePrice|currency }} / {{ product.referenceUnit }} {{ product.unit.translated.name }})
+                    </small>
                 {% endif %}
-                    {{ hotspot.translated.title|raw|striptags|sw_sanitize }}
-                {% if hotspot.translated.link %}
-                    </a>
-                {% endif %}
-            </h4>
-        {% endif %}
-        {% if hotspot.translated.description %}
-            <div class="sas-image-hotspot__desc-p">{{ hotspot.translated.description|raw }}</div>
-        {% endif %}
+            </div>
     </div>
+    </a>
+</div>
 </div>

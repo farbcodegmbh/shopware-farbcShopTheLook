@@ -63,9 +63,9 @@
     .sas-image-hotspot {
         position: absolute;
         z-index: 99;
-        width: 12px;
-        height: 12px;
-        background: rgba($color-crimson-500, 1);
+        width: 14px;
+        height: 14px;
+        background: rgba($white, 1);
         border-radius: 50%;
         cursor: pointer;
         box-shadow: 0 0 3px 0 rgba(0, 0, 0, .2);
@@ -90,14 +90,13 @@
             z-index: 3;
             opacity: 1;
             transform: scale(1.5);
-            border-color: $color-crimson-500;
+            border-color: $white;
         }
 
         &:hover:before {
             opacity: 1;
-            transform: scale(1.4);
-            border-color: $color-crimson-500;
-            //animation: borderColor 2s linear infinite;
+            transform: scale(1.8);
+            border-color: $white;
         }
 
         &:hover:after {
@@ -106,21 +105,29 @@
 
         &:before {
             z-index: 1;
-            border: 0.15em solid rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.9);
             opacity: 0;
             transform: scale(2);
             transition: transform .25s, opacity .2s;
-            left: calc(50% - 6px);
-            top: calc(50% - 6px);
+            left: calc(50% - 7px);
+            top: calc(50% - 7px);
             box-sizing: border-box;
         }
 
         &:after {
             z-index: 2;
-            border: 2px solid $color-crimson-500;
+            border: 0.125rem solid $white;
             animation: wave 2s infinite ease-in-out;
-            left: calc(-50% + 6px);
-            top: calc(-50% + 6px);
+            left: calc(-50% + 7px);
+            top: calc(-50% + 7px);
+        }
+
+        @for $i from 1 to 5 {
+            &:nth-of-type(#{$i}n) {
+                &:after {
+                    animation-delay: -400ms*$i;
+                }
+            }
         }
     }
 }
@@ -129,22 +136,11 @@
 @keyframes wave{
     0% {
         opacity: 1;
-        transform: scale(1);
+        transform: scale(0.5);
     }
+
     100% {
         opacity: 0;
-        transform: scale(2);
-    }
-}
-
-@keyframes borderColor{
-    0% {
-        border-color: #fff;
-    }
-    50% {
-        border-color: red;
-    }
-    100% {
-        border-color: #fff;
+        transform: scale(5);
     }
 }
