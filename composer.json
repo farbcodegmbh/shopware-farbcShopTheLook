@@ -2,14 +2,16 @@
     "name": "sas/image-hotspot",
     "description": "Image Hotspot Plugin for Shopware 6 - farbverliebt Edition",
     "type": "shopware-platform-plugin",
-    "version":"1.0.0",
+    "version":"1.1.0",
     "license": "MIT",
     "authors": [
         {
             "name": "Shape & Shift"
         },
         {
-            "name": "farbcode GmbH"
+            "name": "farbcode GmbH",
+            "email": "hello@farbcode.net",
+            "homepage": "https://farbcode.net"
         }
     ],
     "autoload": {
@@ -29,12 +31,16 @@
             "en-GB":"Image Hotspot Plugin for Shopware 6"
         },
         "manufacturerLink":{
-            "de-DE":"https://shapeandshift.dev",
-            "en-GB":"https://shapeandshift.dev"
+            "de-DE":"https://shapeandshift.dev, https://farbcode.net",
+            "en-GB":"https://shapeandshift.dev, https://farbcode.net"
         },
         "supportLink":{
-            "de-DE":"https://shapeandshift.dev",
-            "en-GB":"https://shapeandshift.dev"
+            "de-DE":"https://shapeandshift.dev, https://farbcode.net",
+            "en-GB":"https://shapeandshift.dev, https://farbcode.net"
         }
+    },
+    "require": {
+        "php": "^8.1",
+        "shopware/core": "~6.5.0"
     }
 }
