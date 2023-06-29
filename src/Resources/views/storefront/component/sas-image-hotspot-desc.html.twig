@@ -4,7 +4,7 @@
         <a class="d-flex text-start" href="{{ seoUrl('frontend.detail.page', { 'productId': product.id }) }}" title="{{ product.translated.name }}">
             <div class="sas-image-hotspot-content pe-4">
                 <div>{{ product.manufacturer.translated.name }}</div>
-                <div class="py-1"><strong>{{ product.translated.name }}</strong></div>
+                <div class="pb-1"><strong>{{ product.translated.name }}</strong></div>
                 <div>{{ product.price.elements|first.gross|currency }}</div>
 
                 {% if product.purchaseUnit is not null and product.referenceUnit > 0 %}

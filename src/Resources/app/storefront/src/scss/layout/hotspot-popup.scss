@@ -25,7 +25,9 @@
                 background: $white;
                 color: $body-color;
                 padding: 0.5rem;
-                border-radius: 0.5rem;
+                border-radius: 0;
+                border: 1px solid $body-color;
+                box-shadow: 0 0 2rem rgba(0, 0, 0, 0.21);
 
                 a {
                     color: $body-color;
