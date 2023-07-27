@@ -2,7 +2,7 @@
     "name": "sas/image-hotspot",
     "description": "Image Hotspot Plugin for Shopware 6 - farbverliebt Edition",
     "type": "shopware-platform-plugin",
-    "version":"1.2.0",
+    "version":"dev-main",
     "license": "MIT",
     "authors": [
         {
